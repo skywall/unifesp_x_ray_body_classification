@@ -1,0 +1,8 @@
+dataset_original/
+dataset_generated/
+.pytest_cache/
+unifesp-x-ray-body-part-classifier.zip
+.idea/
+checkpoints/
+logs/
+submission.csv
