@@ -1,4 +1,5 @@
 import csv
+import os
 from datetime import datetime
 
 import keras
@@ -11,6 +12,11 @@ from keras.applications.resnet_rs import ResNetRS50
 from config import LABEL_COUNT, LEARNING_RATE, EPOCHS, BATCH_SIZE
 from dataset import XRayDatasetGenerator
 from f1_score import F1Score
+
+SEED = 123
+os.environ['PYTHONHASHSEED'] = str(SEED)
+np.random.seed(SEED)
+tensorflow.random.set_seed(SEED)
 
 
 def create_model():
