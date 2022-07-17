@@ -59,10 +59,12 @@ def train(load_weights=False):
     log_dir = "logs/train/" + datetime.now().strftime("%Y%m%d-%H%M%S")
     tb_callback = tensorflow.keras.callbacks.TensorBoard(log_dir, histogram_freq=1)
 
+    es_callback = tensorflow.keras.callbacks.EarlyStopping(monitor='accuracy', patience=3)
+
     model.fit(
         x=dataset_train,
         epochs=EPOCHS,
-        callbacks=[cp_callback, tb_callback],
+        callbacks=[cp_callback, tb_callback, es_callback],
         workers=3,
         validation_data=dataset_val
     )
