@@ -29,4 +29,10 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - F1 Validation accuracy: `0.8533`
 - Kaggle test score: `0.79405`
 
-## Experiment #2: ...
+## Experiment #2: Invert dataset images in `MONOCHROME2` format
+- Dataset (train & test) regenerated - Images with `dicom.PhotometricInterpretation == MONONCHROME2` were inverted
+![Inverted image in MONONCHROME2 format](media/monochrome_conversion.png)
+- Epochs: 8
+- F1 Train accuracy: `0.9662`
+- F1 Validation accuracy: `0.8542`
+- Kaggle test score: `0.80246`
