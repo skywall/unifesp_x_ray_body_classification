@@ -9,7 +9,7 @@ import tensorflow
 from keras import layers, optimizers, losses
 from keras.applications.resnet_rs import ResNetRS50
 
-from config import LABEL_COUNT, LEARNING_RATE, EPOCHS, BATCH_SIZE
+from config import LABEL_COUNT, LEARNING_RATE, EPOCHS, BATCH_SIZE, INPUT_IMAGE_SIZE
 from dataset import XRayDatasetGenerator
 from f1_score import F1Score
 
@@ -20,7 +20,7 @@ tensorflow.random.set_seed(SEED)
 
 
 def create_model():
-    backbone = ResNetRS50(include_top=False, input_shape=(224, 224, 3))
+    backbone = ResNetRS50(include_top=False, input_shape=(INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, 3))
 
     model = keras.Sequential([
         backbone,
