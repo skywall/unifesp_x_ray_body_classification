@@ -54,3 +54,11 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Reached plateau on both metrics (accuracy and F1-Score) and both datasets (train and validation)
 
 ![Experiment #4 stats](media/experiment_4_stats.png)
+
+## Experiment #5: EfficientNetV2M instead of ResnetRS50
+- Use `EfficientNetV2M` with input size `(X, 320, 320, 3)`
+- Batch size: 32
+- Epochs: 12
+- F1 Train accuracy: `0.9717`
+- F1 Validation accuracy: `0.9064`
+- Kaggle test score: `0.86083`
