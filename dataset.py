@@ -1,6 +1,7 @@
 import os
 
 import cv2 as cv
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import tensorflow
@@ -30,7 +31,7 @@ class XRayDatasetGenerator:
             # read image
             image_path = os.path.join(self.path_to_images, label + ".jpg")
             img = np.asarray(Image.open(image_path))
-            img = img / img.max()
+            img = (img / img.max()) * 255
             img = cv.resize(img, (INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE))
             img = cv.merge((img, img, img))
             x = img.astype("float32")
@@ -69,8 +70,11 @@ def check_training_dataset_load():
     loader = XRayDatasetGenerator("dataset_generated/train", "dataset_original/train.csv")
     dataset = loader.get_dataset()
 
-    for (x, y) in dataset.take(10):
-        print(x, y)
+    for (x, y) in dataset.skip(2).take(1):
+        print(x)
+        x = x / 255.
+        plt.imshow(x, cmap="gray")
+        plt.show()
 
 
 def check_eval_dataset_load():
@@ -82,5 +86,5 @@ def check_eval_dataset_load():
 
 
 if __name__ == '__main__':
-    # check_training_dataset_load()
-    check_eval_dataset_load()
+    check_training_dataset_load()
+    # check_eval_dataset_load()
