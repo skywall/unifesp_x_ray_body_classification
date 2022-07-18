@@ -36,3 +36,7 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - F1 Train accuracy: `0.9662`
 - F1 Validation accuracy: `0.8542`
 - Kaggle test score: `0.80246`
+
+## Experiment #3: Keep input image aspect ratio
+- Keep aspect ratio of an input image and pad to model input resolution with black
+- No improvement 
