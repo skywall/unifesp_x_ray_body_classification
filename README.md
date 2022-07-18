@@ -40,3 +40,17 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 ## Experiment #3: Keep input image aspect ratio
 - Keep aspect ratio of an input image and pad to model input resolution with black
 - No improvement 
+
+## Experiment #4: Decrease overfitting
+- Simplify model architecture (just `GlobalAveragePooling` and single `Dense` layer)
+- Increase validation dataset size to 20 % of training samples
+- Shuffle training dataset after each iteration
+- Batch size: 32 -> 64
+- Epochs: 12
+- Learning rate: 0.0001
+- F1 Train accuracy: `0.9997`
+- F1 Validation accuracy: `0.8862`
+- Kaggle test score: `0.83277`
+- Reached plateau on both metrics (accuracy and F1-Score) and both datasets (train and validation)
+
+![Experiment #4 stats](media/experiment_4_stats.png)
