@@ -5,7 +5,7 @@ import keras
 import numpy as np
 import tensorflow
 from keras import layers, optimizers, losses, callbacks
-from keras.applications.resnet_rs import ResNetRS50
+from keras.applications.efficientnet_v2 import EfficientNetV2M
 
 from config import LABEL_COUNT, LEARNING_RATE, EPOCHS, BATCH_SIZE, INPUT_IMAGE_SIZE
 from dataset import XRayDatasetGenerator
@@ -18,7 +18,7 @@ tensorflow.random.set_seed(SEED)
 
 
 def create_model():
-    backbone = ResNetRS50(include_top=False, input_shape=(INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, 3))
+    backbone = EfficientNetV2M(include_top=False, input_shape=(INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, 3))
 
     model = keras.Sequential([
         backbone,
