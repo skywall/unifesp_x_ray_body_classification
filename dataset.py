@@ -37,7 +37,7 @@ class XRayDatasetGenerator:
             x = img.astype("float32")
 
             # read targets - skip uid & path
-            y = np.array(row[2:], dtype="float32")
+            y = np.array(row[1:], dtype="float32")
 
             if self.training:
                 yield x, y

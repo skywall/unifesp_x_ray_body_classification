@@ -30,7 +30,6 @@ def generate_submission():
 
         for label, pred in zip(labels, preds):
             pred_label = pred.nonzero()[0]
-            pred_label = pred_label + 1  # labels indexing starts from 1
 
             uids.append(label.numpy().decode())
             targets.append(" ".join(map(str, pred_label)))
@@ -64,10 +63,7 @@ def evaluate_on_training_dataset():
 
         for y, pred in zip(y, preds):
             y_label = np.array(y).nonzero()[0]
-            y_label = y_label + 1  # labels indexing starts from 1
-
             pred_label = pred.nonzero()[0]
-            pred_label = pred_label + 1
 
             pred_labels = ",".join(map(str, pred_label))
             truth_labels = ",".join(map(str, y_label))

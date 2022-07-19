@@ -18,7 +18,7 @@ def preprocess_train_df(df: pandas.DataFrame):
     :return: preprocessed dataframe
     """
 
-    for class_id in range(LABEL_COUNT + 1):
+    for class_id in range(LABEL_COUNT):
         df[class_id] = 0
 
     def fill_classes(row):
