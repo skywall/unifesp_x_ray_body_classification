@@ -26,8 +26,14 @@ def create_model():
         layers.Dense(LABEL_COUNT, activation="sigmoid")
     ])
 
+    lr_schedule = tensorflow.keras.optimizers.schedules.ExponentialDecay(
+        LEARNING_RATE,
+        decay_steps=200,
+        decay_rate=0.96,
+        staircase=True)
+
     model.compile(
-        optimizer=optimizers.Adam(learning_rate=LEARNING_RATE),
+        optimizer=optimizers.Adam(learning_rate=lr_schedule),
         loss=losses.BinaryCrossentropy(),
         metrics=["accuracy", F1Score()],
     )
