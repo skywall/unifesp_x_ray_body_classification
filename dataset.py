@@ -7,6 +7,7 @@ import pandas as pd
 import tensorflow
 from PIL import Image
 
+from augmentation import transform
 from config import INPUT_IMAGE_SIZE, LABEL_COUNT
 from preprocess import preprocess_train_df
 
@@ -16,10 +17,11 @@ pd.set_option('display.width', 1000)
 
 
 class XRayDatasetGenerator:
-    def __init__(self, path_to_images, path_to_csv, training=True):
+    def __init__(self, path_to_images, path_to_csv, training=True, augmentation=True):
         self.path_to_csv = path_to_csv
         self.path_to_images = path_to_images
         self.training = training
+        self.augmentation = augmentation
 
         self.df = pd.read_csv(path_to_csv)
         self.df = preprocess_train_df(self.df)
@@ -34,6 +36,11 @@ class XRayDatasetGenerator:
             img = (img / img.max()) * 255
             img = cv.resize(img, (INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE))
             img = cv.merge((img, img, img))
+
+            if self.augmentation:
+                img = img.astype("uint8")
+                img = transform(image=img)["image"]
+
             x = img.astype("float32")
 
             # read targets - skip uid & path
@@ -78,7 +85,11 @@ def check_training_dataset_load():
 
 
 def check_eval_dataset_load():
-    loader = XRayDatasetGenerator("dataset_generated/test", "dataset_original/sample_submission.csv", training=False)
+    loader = XRayDatasetGenerator(
+        "dataset_generated/test",
+        "dataset_original/sample_submission.csv",
+        training=False, augmentation=False
+    )
     dataset = loader.get_dataset()
 
     for (x, label) in dataset.take(10):

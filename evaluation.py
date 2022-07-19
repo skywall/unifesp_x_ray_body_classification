@@ -13,7 +13,7 @@ from train import create_model
 
 def generate_submission():
     dataset_eval = XRayDatasetGenerator(
-        "dataset_generated/test", "dataset_original/sample_submission.csv", training=False
+        "dataset_generated/test", "dataset_original/sample_submission.csv", training=False, augmentation=False
     ).get_dataset().batch(BATCH_SIZE)
 
     model = create_model()
