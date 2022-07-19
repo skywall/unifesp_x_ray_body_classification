@@ -62,3 +62,7 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - F1 Train accuracy: `0.9717`
 - F1 Validation accuracy: `0.9064`
 - Kaggle test score: `0.86083`
+
+## Experiment #6: DenseNet instead of EfficientNetV2M
+- Multiple epochs, multiple architectures, w/o preprocessing
+- No improvement, still overfitting
