@@ -15,7 +15,7 @@ transform = A.Compose([
 ])
 
 
-def plot_images(imgs, labels=None, cols=5):
+def plot_images(imgs, labels=None, cols=5, show=True):
     count = len(imgs)
 
     if count % cols == 0:
@@ -29,11 +29,14 @@ def plot_images(imgs, labels=None, cols=5):
         col = idx % cols
 
         arr[row, col].imshow(imgs[idx])
+        arr[row, col].set_xticks([])
+        arr[row, col].set_yticks([])
         if labels is not None:
             arr[row, col].set_title(labels[idx])
 
     plt.tight_layout()
-    plt.show()
+    if show:
+        plt.show()
 
 
 if __name__ == "__main__":

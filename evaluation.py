@@ -6,7 +6,8 @@ import pandas
 import tensorflow
 from matplotlib import pyplot as plt
 
-from config import BATCH_SIZE
+from augmentation import plot_images
+from config import BATCH_SIZE, label_as_string
 from dataset import XRayDatasetGenerator
 from train import create_model
 
@@ -43,9 +44,9 @@ def generate_submission():
     df.to_csv("submission.csv", index=False, quoting=csv.QUOTE_NONE)
 
 
-def evaluate_on_training_dataset():
+def evaluate_on_training_dataset(plot_incorrect=True):
     dataset_train = XRayDatasetGenerator(
-        "dataset_generated/train", "dataset_original/train.csv", training=True
+        "dataset_generated/train", "dataset_original/train.csv", training=True, augmentation=False
     ).get_dataset().batch(BATCH_SIZE)
 
     model = create_model()
@@ -57,39 +58,59 @@ def evaluate_on_training_dataset():
     correct = defaultdict(int)
     incorrect = defaultdict(int)
 
+    incorrect_labels = []
+    incorrect_imgs = []
+
     for (x, y) in dataset_train:
         preds = model(x)
         preds = np.rint(preds)
 
-        for y, pred in zip(y, preds):
+        for x, y, pred in zip(x, y, preds):
             y_label = np.array(y).nonzero()[0]
             pred_label = pred.nonzero()[0]
 
-            pred_labels = ",".join(map(str, pred_label))
-            truth_labels = ",".join(map(str, y_label))
+            truth_labels_id = ",".join(map(str, y_label))
+            pred_labels_id = ",".join(map(str, pred_label))
 
-            if pred_labels == truth_labels:
-                total[pred_labels] = total[pred_labels] + 1
-                correct[pred_labels] = correct[pred_labels] + 1
+            y_label_text = np.array([label_as_string(label_id) for label_id in y_label])
+            pred_label_text = np.array([label_as_string(label_id) for label_id in pred_label])
+
+            truth_labels_text = ",".join(map(str, y_label_text))
+            pred_labels_text = ",".join(map(str, pred_label_text))
+
+            if pred_labels_id == truth_labels_id:
+                total[pred_labels_id] = total[pred_labels_id] + 1
+                correct[pred_labels_id] = correct[pred_labels_id] + 1
             else:
-                total[truth_labels] = total[truth_labels] + 1
-                incorrect[truth_labels + "->" + pred_labels] = incorrect[truth_labels + "->" + pred_labels] + 1
+                total[truth_labels_id] = total[truth_labels_id] + 1
+                incorrect[truth_labels_id + " → " + pred_labels_id] = incorrect[truth_labels_id + " → " + pred_labels_id] + 1
+
+                incorrect_labels.append(truth_labels_text + " → " + pred_labels_text)
+                incorrect_imgs.append(x / 255)
 
     total = dict(sorted(total.items()))
     correct = dict(sorted(correct.items()))
     incorrect = dict(sorted(incorrect.items()))
 
-    _, arr = plt.subplots(3, 1)
-    bars = arr[0].bar(total.keys(), total.values())
-    arr[0].set_title("Total (" + str(sum(total.values())) + ")")
-    arr[0].bar_label(bars)
-    bars = arr[1].bar(correct.keys(), correct.values())
-    arr[1].set_title("Correctly classified (" + str(sum(correct.values())) + ")")
-    arr[1].bar_label(bars)
-    bars = arr[2].bar(incorrect.keys(), incorrect.values())
-    arr[2].set_title("Incorrectly classified [truth->prediction] (" + str(sum(incorrect.values())) + ")")
-    arr[2].bar_label(bars)
-    arr[2].tick_params(labelrotation=45)
+    incorrect_labels = np.array([str(idx) + ": " + label for idx, label in enumerate(incorrect_labels)])
+
+    if plot_incorrect:
+        img_cnt = 21
+        for idx in range(0, len(incorrect_imgs), img_cnt):
+            plot_images(incorrect_imgs[idx:idx+img_cnt], incorrect_labels[idx:idx+img_cnt], cols=7, show=False)
+
+    dicts = [total, correct, incorrect]
+    titles = ["Total:", "Correctly classified:", "Incorrectly classified [truth→pred]: "]
+
+    _, arr = plt.subplots(3, 1, figsize=(18, 10))
+
+    for idx, (dct, title) in enumerate(zip(dicts, titles)):
+        bars = arr[idx].bar(dct.keys(), dct.values())
+        arr[idx].set_title(title + str(sum(dct.values())))
+        arr[idx].bar_label(bars)
+
+        arr[idx].tick_params(labelrotation=45)
+
     plt.tight_layout()
     plt.show()
 

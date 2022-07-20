@@ -31,3 +31,7 @@ labels = {
 }
 
 labels_reversed = dict((v, k) for k, v in labels.items())
+
+
+def label_as_string(label_id):
+    return labels_reversed[label_id]
