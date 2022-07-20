@@ -30,18 +30,21 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Kaggle test score: `0.79405`
 
 ## Experiment #2: Invert dataset images in `MONOCHROME2` format
+
 - Dataset (train & test) regenerated - Images with `dicom.PhotometricInterpretation == MONONCHROME2` were inverted
-![Inverted image in MONONCHROME2 format](media/monochrome_conversion.png)
+  ![Inverted image in MONONCHROME2 format](media/monochrome_conversion.png)
 - Epochs: 8
 - F1 Train accuracy: `0.9662`
 - F1 Validation accuracy: `0.8542`
 - Kaggle test score: `0.80246`
 
 ## Experiment #3: Keep input image aspect ratio
+
 - Keep aspect ratio of an input image and pad to model input resolution with black
-- No improvement 
+- No improvement
 
 ## Experiment #4: Decrease overfitting
+
 - Simplify model architecture (just `GlobalAveragePooling` and single `Dense` layer)
 - Increase validation dataset size to 20 % of training samples
 - Shuffle training dataset after each iteration
@@ -56,6 +59,7 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 ![Experiment #4 stats](media/experiment_4_stats.png)
 
 ## Experiment #5: EfficientNetV2M instead of ResnetRS50
+
 - Use `EfficientNetV2M` with input size `(X, 320, 320, 3)`
 - Batch size: 32
 - Epochs: 12
@@ -64,5 +68,38 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Kaggle test score: `0.86083`
 
 ## Experiment #6: DenseNet instead of EfficientNetV2M
+
 - Multiple epochs, multiple architectures, w/o preprocessing
 - No improvement, still overfitting
+
+## Experiment #7: Data augmentation
+
+- Apply data augmentation to training dataset
+    - CLAHE, Rotate, Brightness & Contrast, (ISO/Gauss)Noise,
+- Epochs: 30 (early stopped after 25)
+- F1 Train accuracy: `0.9758`
+- F1 Validation accuracy: `0.9046`
+- Kaggle test score: `0.92087`
+
+### Stats
+
+There were 41 out of 1738 images from training dataset that were not classified correctly. Mapping between `class_id`
+and class name is available in [config.py](config.py). Incorrect labels are in format `[truth]→[prediction]`.
+![Classification results](media/experiment_7/classification_result.png)
+
+Images of 40 incorrectly classified inputs and commentary.
+![Incorrectly classified inputs #1](media/experiment_7/incorrect_class_1.png)
+![Incorrectly classified inputs #2](media/experiment_7/incorrect_class_2.png)
+
+| Image IDs                                     | Comment / Conclusion*                                                      |
+|-----------------------------------------------|----------------------------------------------------------------------------|
+| `0,31,32`                                     | Image too bright / dark / low contrast. Hard to spot features.             |
+| `1,2,7,8,13,15,17,18,20,22,23,28,34,35,38,39` | Questionably or erroneously labeled dataset. Model's guess not bad at all. |
+| `3,4,6,14,26,33,36`                           | Truth defined as `Other`. Model made good guess.                           |
+| `5,13,23,34`                                  | Highly atypical data (broken bones etc.). Model could perform better.      |
+| `10,19,35,40`                                 | Model found only part of the labels.                                       |
+| `16,21`                                       | Model classified most of the labels correctly, but added incorrect ones.   |
+| `11,12,24,25,27,29,30,37`                     | Just wrong classification.                                                 |
+| `13,25,36`                                    | Image combined from more than 1 x-ray scan.                                |
+
+*Some conclusion might not be completely correct since I'm not expert in radiology.  
