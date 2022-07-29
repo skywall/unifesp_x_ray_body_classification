@@ -102,4 +102,13 @@ Images of 40 incorrectly classified inputs and commentary.
 | `11,12,24,25,27,29,30,37`                     | Just wrong classification.                                                 |
 | `13,25,36`                                    | Image combined from more than 1 x-ray scan.                                |
 
-*Some conclusion might not be completely correct since I'm not expert in radiology.  
+*Some conclusion might not be completely correct since I'm not expert in radiology.
+
+## Experiment #8: Less epochs
+
+- 25 epochs was probably too much and model was overtrained
+- Epochs: 25 -> 20
+- Input size: `(224, 224, 3)`
+- F1 Train accuracy: `0.9658`
+- F1 Validation accuracy: `0.9044`
+- Kaggle test score: `0.93827`
