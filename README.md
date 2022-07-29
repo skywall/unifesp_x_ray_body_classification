@@ -18,15 +18,15 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Train/Validation dataset split: 1588/150
 - Model: ResnetRS50 `(224, 224, 3)`
 - No shuffle
-- F1 Train accuracy: `0.8860`
-- F1 Validation accuracy: `0.8133`
+- F1 Train score: `0.8860`
+- F1 Validation score: `0.8133`
 - Kaggle test score: `0.78058`
 
 ## Experiment #1: Overtrain model
 
 - Epochs: 5 --> 10
-- F1 Train accuracy: `0.953`
-- F1 Validation accuracy: `0.8533`
+- F1 Train score: `0.953`
+- F1 Validation score: `0.8533`
 - Kaggle test score: `0.79405`
 
 ## Experiment #2: Invert dataset images in `MONOCHROME2` format
@@ -34,8 +34,8 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Dataset (train & test) regenerated - Images with `dicom.PhotometricInterpretation == MONONCHROME2` were inverted
   ![Inverted image in MONONCHROME2 format](media/monochrome_conversion.png)
 - Epochs: 8
-- F1 Train accuracy: `0.9662`
-- F1 Validation accuracy: `0.8542`
+- F1 Train score: `0.9662`
+- F1 Validation score: `0.8542`
 - Kaggle test score: `0.80246`
 
 ## Experiment #3: Keep input image aspect ratio
@@ -51,8 +51,8 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Batch size: 32 -> 64
 - Epochs: 12
 - Learning rate: 0.0001
-- F1 Train accuracy: `0.9997`
-- F1 Validation accuracy: `0.8862`
+- F1 Train score: `0.9997`
+- F1 Validation score: `0.8862`
 - Kaggle test score: `0.83277`
 - Reached plateau on both metrics (accuracy and F1-Score) and both datasets (train and validation)
 
@@ -63,8 +63,8 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Use `EfficientNetV2M` with input size `(X, 320, 320, 3)`
 - Batch size: 32
 - Epochs: 12
-- F1 Train accuracy: `0.9717`
-- F1 Validation accuracy: `0.9064`
+- F1 Train score: `0.9717`
+- F1 Validation score: `0.9064`
 - Kaggle test score: `0.86083`
 
 ## Experiment #6: DenseNet instead of EfficientNetV2M
@@ -77,8 +77,8 @@ Images in these directories should follow `<SOPInstanceUID>.jpg` naming conventi
 - Apply data augmentation to training dataset
     - CLAHE, Rotate, Brightness & Contrast, (ISO/Gauss)Noise,
 - Epochs: 30 (early stopped after 25)
-- F1 Train accuracy: `0.9758`
-- F1 Validation accuracy: `0.9046`
+- F1 Train score: `0.9758`
+- F1 Validation score: `0.9046`
 - Kaggle test score: `0.92087`
 
 ### Stats
@@ -109,6 +109,6 @@ Images of 40 incorrectly classified inputs and commentary.
 - 25 epochs was probably too much and model was overtrained
 - Epochs: 25 -> 20
 - Input size: `(224, 224, 3)`
-- F1 Train accuracy: `0.9658`
-- F1 Validation accuracy: `0.9044`
+- F1 Train score: `0.9658`
+- F1 Validation score: `0.9044`
 - Kaggle test score: `0.93827`
