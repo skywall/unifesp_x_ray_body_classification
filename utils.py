@@ -31,6 +31,38 @@ def get_dcm_filenames_dict(dir):
     return filenames
 
 
+def plot_images(imgs, labels=None, cols=5, show=True):
+    """
+    Plot list of images into a grid
+    :param imgs: list of images
+    :param labels: list of labels
+    :param cols: number of columns in plotted grid
+    :param show: True if plot should be immediately shown
+    :return:
+    """
+    count = len(imgs)
+
+    if count % cols == 0:
+        rows = count // cols
+    else:
+        rows = (count // cols) + 1
+
+    _, arr = plt.subplots(rows, cols, figsize=(18, 10))
+    for idx, image in enumerate(imgs):
+        row = idx // cols
+        col = idx % cols
+
+        arr[row, col].imshow(imgs[idx])
+        arr[row, col].set_xticks([])
+        arr[row, col].set_yticks([])
+        if labels is not None:
+            arr[row, col].set_title(labels[idx])
+
+    plt.tight_layout()
+    if show:
+        plt.show()
+
+
 def verify_image_load(show=False):
     # MONOCHROME1
     # img = load_dcm_image(

@@ -6,7 +6,7 @@ import pandas
 import tensorflow
 from matplotlib import pyplot as plt
 
-from augmentation import plot_images
+from utils import plot_images
 from config import BATCH_SIZE, label_as_string
 from dataset import XRayDatasetGenerator
 from train import create_model
